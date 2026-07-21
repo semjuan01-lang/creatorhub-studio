@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  plan      String   @default("Free")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  layouts   Layout[]
+  clips     Clip[]
+  media     Media[]
+  settings  Setting?
+}
+
+model Layout {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  thumbnail   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  userId String
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Clip {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  videoUrl    String
+  thumbnail   String?
+  duration    Int?
+  createdAt   DateTime @default(now())
+
+  userId String
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Media {
+  id          String   @id @default(cuid())
+  name        String
+  type        String
+  url         String
+  size        Int
+  folder      String?   @default("Biblioteca")
+  favorite    Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  userId String
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Setting {
+  id             String   @id @default(cuid())
+  theme          String   @default("dark")
+  language       String   @default("pt-BR")
+  notifications  Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
