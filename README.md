@@ -31,3 +31,18 @@ O CreatorHub Studio é uma plataforma profissional para criação e transmissão
 - [ ] Streaming YouTube
 - [ ] Clipes
 - [ ] IA
+creatorhub-studio
+
+app/
+ ├── page.tsx        (Tela inicial)
+ ├── dashboard/
+ │    └── page.tsx   (Painel)
+ ├── globals.css
+
+components/
+ ├── Logo.tsx
+ ├── Menu.tsx
+ └── Card.tsx
+
+public/
+ └── imagens
